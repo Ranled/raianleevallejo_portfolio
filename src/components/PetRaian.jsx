@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Download, Monitor, Mouse, Hand, Move, X as XIcon, GripVertical, Pin, Sparkles, Volume2, Moon, Utensils, MessageCircle, Palette, Clock, Users, ChevronDown, ShieldAlert, Rocket, Play } from 'lucide-react';
+import { Download, Monitor, Smartphone, Mouse, Hand, Move, X as XIcon, GripVertical, Pin, Sparkles, Volume2, Moon, Utensils, MessageCircle, Palette, Clock, Users, ChevronDown, ShieldAlert, Rocket, Play } from 'lucide-react';
 
 export default function PetRaian() {
   const [activePreview, setActivePreview] = useState(0);
@@ -89,19 +89,46 @@ export default function PetRaian() {
             </p>
 
             <div className="pet-hero-actions">
-              <a
-                href="/DESKTOP WEB/Raian_your_pet.exe"
-                download="Raian_your_pet.exe"
-                className="pet-btn pet-btn-download"
-              >
-                <Download size={20} />
-                <span>Download Raian.exe</span>
-                <span className="pet-btn-size">~78 MB</span>
-              </a>
-              <a href="#preview" className="pet-btn pet-btn-ghost">
-                <Play size={18} />
-                <span>Watch Preview</span>
-              </a>
+              <div className="pet-hero-action-group">
+                <span className="pet-action-title-text">
+                  <Monitor size={16} /> Desktop (Windows)
+                </span>
+                <a
+                  href="/DESKTOP WEB/Raian_your_pet.exe"
+                  download="Raian_your_pet.exe"
+                  className="pet-btn pet-btn-download"
+                >
+                  <Download size={20} />
+                  <span>Download Raian.exe</span>
+                  <span className="pet-btn-size">~82 MB</span>
+                </a>
+              </div>
+
+              <div className="pet-hero-action-group">
+                <span className="pet-action-title-text">
+                  <Smartphone size={16} /> Mobile (Android)
+                </span>
+                <a
+                  href="/DESKTOP WEB/Raian_Pet_Android.apk"
+                  download="Raian_Pet_Android.apk"
+                  className="pet-btn pet-btn-android"
+                >
+                  <Download size={20} />
+                  <span>Download Raian_Pet.apk</span>
+                  <span className="pet-btn-size">~66 MB</span>
+                </a>
+                <span className="pet-compatibility-info">
+                  ⚠️ Some mobile devices might not be compatible.
+                </span>
+              </div>
+
+              <div className="pet-hero-preview-group">
+                <span className="pet-action-title-text">&nbsp;</span>
+                <a href="#preview" className="pet-btn pet-btn-ghost">
+                  <Play size={18} />
+                  <span>Watch Preview</span>
+                </a>
+              </div>
             </div>
 
             <div className="pet-quick-steps">
@@ -318,22 +345,47 @@ export default function PetRaian() {
           <div className="pet-cta-card">
             <div className="pet-cta-glow" />
             <h2>Ready to meet Raian?</h2>
-            <p>Download now and let your new desktop companion keep you company!</p>
-            <a
-              href="/DESKTOP WEB/Raian_your_pet.exe"
-              download="Raian_your_pet.exe"
-              className="pet-btn pet-btn-download pet-btn-lg"
-            >
-              <Download size={22} />
-              <span>Download Raian.exe</span>
-            </a>
+            <p>Download now and let your new companion keep you company on your screen!</p>
+            
+            <div className="pet-cta-actions">
+              <div className="pet-cta-action-group">
+                <span className="pet-cta-label">
+                  <Monitor size={18} /> Desktop (Windows)
+                </span>
+                <a
+                  href="/DESKTOP WEB/Raian_your_pet.exe"
+                  download="Raian_your_pet.exe"
+                  className="pet-btn pet-btn-download pet-btn-lg"
+                >
+                  <Download size={22} />
+                  <span>Download Raian.exe</span>
+                </a>
+              </div>
+
+              <div className="pet-cta-action-group">
+                <span className="pet-cta-label">
+                  <Smartphone size={18} /> Mobile (Android)
+                </span>
+                <a
+                  href="/DESKTOP WEB/Raian_Pet_Android.apk"
+                  download="Raian_Pet_Android.apk"
+                  className="pet-btn pet-btn-android pet-btn-lg"
+                >
+                  <Download size={22} />
+                  <span>Download Raian_Pet.apk</span>
+                </a>
+                <span className="pet-compatibility-info">
+                  ⚠️ Note: Some mobile devices might not be compatible.
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Footer Credit */}
       <footer className="pet-footer">
-        <p>Developed by <strong>Raian</strong></p>
+        <p>Developer: <strong>Raian Lee D. Vallejo</strong></p>
       </footer>
     </div>
   );
