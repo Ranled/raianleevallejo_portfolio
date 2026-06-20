@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Hero from './components/Hero';
 import Professional from './components/Professional';
 import Ventures from './components/Ventures';
@@ -105,6 +106,14 @@ export default function App() {
                 Contact
               </button>
             </li>
+            <li>
+              <Link 
+                to="/pet-raian" 
+                className="nav-link pet-raian-nav-btn"
+              >
+                PET RAIAN
+              </Link>
+            </li>
           </ul>
 
           {/* Mobile menu toggle */}
@@ -167,6 +176,12 @@ export default function App() {
           >
             Contact
           </button>
+          <Link 
+            to="/pet-raian" 
+            style={{ textAlign: 'left', fontSize: '16px', fontWeight: '700', background: 'linear-gradient(135deg, #3b82f6, #6366f1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block' }}
+          >
+            PET RAIAN
+          </Link>
         </div>
       )}
 

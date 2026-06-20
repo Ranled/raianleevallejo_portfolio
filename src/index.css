@@ -272,6 +272,26 @@ button {
   width: 100%;
 }
 
+/* PET RAIAN Special Nav Button */
+.pet-raian-nav-btn {
+  background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.03em;
+  position: relative;
+}
+
+.pet-raian-nav-btn::after {
+  background: linear-gradient(135deg, #3b82f6, #6366f1) !important;
+  height: 2.5px !important;
+}
+
+.pet-raian-nav-btn:hover::after {
+  width: 100% !important;
+}
+
 .mobile-menu-btn {
   display: none;
   font-size: 24px;
