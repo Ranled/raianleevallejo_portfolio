@@ -941,3 +941,314 @@
     font-size: 26px;
   }
 }
+
+/* ============================
+   VERSION 2.0.0 UPDATE NOTES
+   ============================ */
+.pet-update-notes-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.pet-update-intro {
+  font-size: 16px;
+  color: #94a3b8;
+  text-align: center;
+  margin-bottom: 30px;
+  line-height: 1.6;
+}
+
+.pet-update-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.pet-update-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.pet-update-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(99, 179, 237, 0.2);
+  transform: translateY(-2px);
+}
+
+.pet-update-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pet-update-emoji {
+  font-size: 24px;
+}
+
+.pet-update-card h3 {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.pet-update-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pet-update-card li {
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.6;
+  position: relative;
+  padding-left: 14px;
+}
+
+.pet-update-card li::before {
+  content: "•";
+  color: #63b3ed;
+  position: absolute;
+  left: 0;
+  font-weight: bold;
+}
+
+.pet-update-card code {
+  background: rgba(99, 179, 237, 0.1);
+  color: #63b3ed;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: monospace;
+}
+
+/* ============================
+   AUDIO SOUNDBOARD
+   ============================ */
+.pet-soundboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 30px;
+}
+
+.pet-sound-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pet-sound-card:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(99, 179, 237, 0.3) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.pet-sound-card.playing {
+  background: rgba(59, 130, 246, 0.05) !important;
+  border-color: rgba(59, 130, 246, 0.5) !important;
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+}
+
+.pet-sound-play-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #63b3ed;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.pet-sound-card:hover .pet-sound-play-btn {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.pet-sound-card.playing .pet-sound-play-btn {
+  background: #3b82f6;
+  color: #ffffff;
+}
+
+.pet-sound-info {
+  flex-grow: 1;
+}
+
+.pet-sound-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.pet-sound-badge {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #63b3ed;
+  background: rgba(99, 179, 237, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.pet-sound-file {
+  font-size: 10px;
+  color: #475569;
+  font-family: monospace;
+}
+
+.pet-sound-info h3 {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.pet-sound-info p {
+  font-size: 12px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+/* Audio Wave Equalizer Animation */
+.pet-playing-indicator {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  width: 14px;
+  height: 14px;
+}
+
+.pet-playing-indicator .bar {
+  width: 2px;
+  height: 100%;
+  background-color: #ffffff;
+  border-radius: 1px;
+  animation: soundBarWave 0.8s ease-in-out infinite alternate;
+  transform-origin: bottom;
+}
+
+.pet-playing-indicator .bar:nth-child(1) {
+  animation-delay: 0.1s;
+  height: 60%;
+}
+.pet-playing-indicator .bar:nth-child(2) {
+  animation-delay: 0.3s;
+  height: 100%;
+}
+.pet-playing-indicator .bar:nth-child(3) {
+  animation-delay: 0.5s;
+  height: 40%;
+}
+
+@keyframes soundBarWave {
+  0% {
+    transform: scaleY(0.3);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+/* ============================
+   VIDEO PREVIEW SWITCHER
+   ============================ */
+.pet-video-showcase {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pet-video-tabs {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.pet-video-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.pet-video-tab:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.pet-video-tab.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  border-color: rgba(59, 130, 246, 0.2);
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25);
+}
+
+.pet-video-description-text {
+  font-size: 14px;
+  color: #94a3b8;
+  line-height: 1.6;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* ============================
+   UPDATED SCROLLBAR FOR SOUNDBOARD
+   ============================ */
+@media (max-width: 768px) {
+  .pet-update-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .pet-update-card[style*="grid-column: span 2"] {
+    grid-column: span 1 !important;
+  }
+
+  .pet-soundboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pet-video-tabs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pet-video-tab {
+    justify-content: center;
+  }
+}
+

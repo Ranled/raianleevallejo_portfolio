@@ -5,6 +5,9 @@ export default function PetRaian() {
   const [activePreview, setActivePreview] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [floatingY, setFloatingY] = useState(0);
+  const [playingAudio, setPlayingAudio] = useState(null);
+  const [audioInstance, setAudioInstance] = useState(null);
+  const [activeVideoTab, setActiveVideoTab] = useState('demo');
 
   useEffect(() => {
     setIsVisible(true);
@@ -14,11 +17,92 @@ export default function PetRaian() {
     return () => clearInterval(interval);
   }, []);
 
+  // Clean up audio on unmount
+  useEffect(() => {
+    return () => {
+      if (audioInstance) {
+        audioInstance.pause();
+      }
+    };
+  }, [audioInstance]);
+
   const previewImages = [
-    { src: '/DESKTOP WEB/grab2.png', label: 'Grab Reaction', emoji: '😤' },
     { src: '/DESKTOP WEB/idle.png', label: 'Idle State', emoji: '🧍' },
     { src: '/DESKTOP WEB/walk1.png', label: 'Walking', emoji: '🚶' },
+    { src: '/DESKTOP WEB/grab2.png', label: 'Grab Reaction', emoji: '😤' },
+    { src: '/DESKTOP WEB/fllying.png', label: 'Flying Overhaul', emoji: '✈️' },
+    { src: '/DESKTOP WEB/eat1.png', label: 'Interactive Feeding', emoji: '🍙' },
   ];
+
+  const videos = {
+    demo: {
+      src: '/DESKTOP WEB/SAMPLE VID.mp4',
+      title: 'Full Gameplay Demo',
+      desc: 'Watch Raian walk around, interact with dragging and dropping, and hear some voice lines in action!',
+    },
+    eating: {
+      src: '/DESKTOP WEB/EATING SAMPLE VID.mp4',
+      title: '🍙 Interactive Feeding Demo',
+      desc: 'Right-click Raian and select "Feed Raian" to watch him eat a rice ball with eating sound effects for 3 seconds!',
+    },
+    flying: {
+      src: '/DESKTOP WEB/FLYING SAMPLE VID.mp4',
+      title: '✈️ Flight Overhaul Demo',
+      desc: 'Watch Raian fly freely across the desktop, bouncing off edges, bobbing up and down, and facing the flight direction!',
+    }
+  };
+
+  const voiceovers = [
+    { name: "Feed Raian (Eating)", file: "eating.m4a", category: "Feeding", desc: "Plays when you feed him a rice ball" },
+    { name: "Falling Scream", file: "falling1.m4a", category: "Physics", desc: "Plays when dropped from the top" },
+    { name: "Am I Flying?", file: "Are we flying AM I FLYING.m4a", category: "Flight", desc: "Soaring high in the sky" },
+    { name: "Flight Line 1", file: "flying.m4a", category: "Flight", desc: "Random flight commentary" },
+    { name: "Flight Line 2", file: "flying 2.m4a", category: "Flight", desc: "Random flight commentary" },
+    { name: "Flight Line 3", file: "flying3.m4a", category: "Flight", desc: "Random flight commentary" },
+    { name: "Motivation Not Found", file: "Error 404 motivation not found.m4a", category: "Quotes", desc: "Classic pixelated procrastination" },
+    { name: "Drink Water", file: "Remember to drink water.m4a", category: "Quotes", desc: "Friendly hydration reminder" },
+    { name: "Theme Song", file: "Alexa, play my theme song.m4a", category: "Quotes", desc: "Asking Alexa to play his jam" },
+    { name: "Main Character", file: "Plot twist I'm the main character.m4a", category: "Quotes", desc: "Self-aware pixel protagonist" },
+    { name: "Professional Overthinker", file: "Current moodprofessional overthinker.m4a", category: "Quotes", desc: "Relatable daily mood" },
+    { name: "Yawns... Not Sleeping", file: "yawns ...I wasn't sleeping.m4a", category: "Quotes", desc: "Getting comfy and tired" },
+  ];
+
+  const playSound = (fileName) => {
+    // If there is a playing audio, stop it
+    if (audioInstance) {
+      audioInstance.pause();
+      audioInstance.currentTime = 0;
+    }
+
+    if (playingAudio === fileName) {
+      // If clicking the same one, just pause
+      setPlayingAudio(null);
+      setAudioInstance(null);
+      return;
+    }
+
+    const audioPath = `/DESKTOP WEB/voiceover/${fileName}`;
+    const audio = new Audio(audioPath);
+    
+    audio.addEventListener('ended', () => {
+      setPlayingAudio(null);
+      setAudioInstance(null);
+    });
+
+    audio.addEventListener('error', (e) => {
+      console.error("Audio failed to play", e);
+      setPlayingAudio(null);
+      setAudioInstance(null);
+    });
+
+    setPlayingAudio(fileName);
+    setAudioInstance(audio);
+    audio.play().catch(err => {
+      console.warn("Audio playback failed, possibly user gesture required", err);
+      setPlayingAudio(null);
+      setAudioInstance(null);
+    });
+  };
 
   const controls = [
     { action: 'Grab Raian', how: 'Left-click on him', icon: <Hand size={18} /> },
@@ -37,13 +121,11 @@ export default function PetRaian() {
   ];
 
   const upcoming = [
-    { icon: <Volume2 size={20} />, title: 'Sound effects', desc: 'Reactions with audio' },
     { icon: <Moon size={20} />, title: 'Sleep mode', desc: 'Raian takes naps when you\'re idle' },
-    { icon: <Utensils size={20} />, title: 'Feeding', desc: 'Give Raian snacks!' },
-    { icon: <MessageCircle size={20} />, title: 'More quotes', desc: 'Even more funny things to say' },
     { icon: <Palette size={20} />, title: 'Skins / Outfits', desc: 'Dress up Raian in different styles' },
     { icon: <Clock size={20} />, title: 'Reminders', desc: 'Raian reminds you to take breaks' },
     { icon: <Users size={20} />, title: 'Multiple pets', desc: 'Have more than one on screen!' },
+    { icon: <MessageCircle size={20} />, title: 'Mini Games', desc: 'Play mini games with Raian directly on screen' },
   ];
 
   const techStack = [
@@ -94,13 +176,13 @@ export default function PetRaian() {
                   <Monitor size={16} /> Desktop (Windows)
                 </span>
                 <a
-                  href="/DESKTOP WEB/Raian_your_pet.exe"
-                  download="Raian_your_pet.exe"
+                  href="/DESKTOP WEB/Raian_your_pet_V2.exe"
+                  download="Raian_your_pet_V2.exe"
                   className="pet-btn pet-btn-download"
                 >
                   <Download size={20} />
-                  <span>Download Raian.exe</span>
-                  <span className="pet-btn-size">~82 MB</span>
+                  <span>Download Raian.exe (v2.0.0)</span>
+                  <span className="pet-btn-size">~98 MB</span>
                 </a>
               </div>
 
@@ -165,31 +247,179 @@ export default function PetRaian() {
         </div>
       </section>
 
-      {/* Video Preview */}
-      <section id="preview" className="pet-section">
+      {/* Update Notes Section */}
+      <section className="pet-section pet-section-alt">
         <div className="pet-container">
           <div className="pet-section-header">
-            <span className="pet-tag">Preview</span>
-            <h2 className="pet-section-title">See Raian in Action</h2>
+            <span className="pet-tag">Version 2.0.0</span>
+            <h2 className="pet-section-title">🎉 Raian Desktop Pet - Update Notes</h2>
+            <p className="pet-section-subtitle">
+              Release Date: 📅 June 21, 2026
+            </p>
           </div>
 
-          <div className="pet-video-wrapper">
-            <div className="pet-video-container">
-              <video
-                controls
-                autoPlay
-                muted
-                loop
-                playsInline
-                poster="/DESKTOP WEB/idle.png"
-              >
-                <source src="/DESKTOP WEB/SAMPLE VID.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              <div className="pet-video-badge">
-                <Play size={12} />
-                <span>Sample Demo</span>
+          <div className="pet-update-notes-container">
+            <div className="pet-update-intro">
+              <p>We've rolled out a major update to Raian! Here is a list of everything new and improved in <strong>v2.0.0</strong>:</p>
+            </div>
+
+            <div className="pet-update-grid">
+              <div className="pet-update-card glass-card">
+                <div className="pet-update-card-header">
+                  <span className="pet-update-emoji">🎙️</span>
+                  <h3>Native Audio & Voice-Overs</h3>
+                </div>
+                <ul>
+                  <li><strong>Full Voice-Over Support:</strong> Raian's dialogue is now fully voiced! Speech bubbles are connected to matching native <code>.m4a</code> voice lines that play seamlessly in the background.</li>
+                  <li><strong>Special Screaming Voice:</strong> Plays a falling scream (<code>aaaaahhh</code>) whenever Raian is dropped from the top of the screen.</li>
+                </ul>
               </div>
+
+              <div className="pet-update-card glass-card">
+                <div className="pet-update-card-header">
+                  <span className="pet-update-emoji">🍙</span>
+                  <h3>Interactive Feeding</h3>
+                </div>
+                <ul>
+                  <li><strong>Feed Raian:</strong> Right-click Raian and select "Feed Raian" to give him a rice ball!</li>
+                  <li><strong>New Asset & Custom Duration:</strong> Displays the new <code>eat1.png</code> frame, plays eating sounds (<code>eating.m4a</code>), and stays in the eating state for 3 seconds before returning to idle.</li>
+                </ul>
+              </div>
+
+              <div className="pet-update-card glass-card">
+                <div className="pet-update-card-header">
+                  <span className="pet-update-emoji">✈️</span>
+                  <h3>Complete Flight Overhaul ("Make Raian Fly")</h3>
+                </div>
+                <ul>
+                  <li><strong>Full Desktop Freedom:</strong> Raian now flies freely all over the screen, bouncing dynamically off all four edges.</li>
+                  <li><strong>Flying Physics:</strong> Added a smooth sinusoidal bobbing effect (moves up and down gently as he flies) with random vertical direction changes.</li>
+                  <li><strong>Auto-Flip Sprite:</strong> If Raian is flying left, the sprite automatically flips horizontal to face the correct direction.</li>
+                  <li><strong>Flight Voice Lines:</strong> Plays random flying quotes (<code>flying.m4a</code>, <code>flying 2.m4a</code>, or <code>flying3.m4a</code>) while soaring.</li>
+                  <li><strong>Manual Flight:</strong> You can now manually trigger flight from the right-click context menu.</li>
+                </ul>
+              </div>
+
+              <div className="pet-update-card glass-card">
+                <div className="pet-update-card-header">
+                  <span className="pet-update-emoji">💬</span>
+                  <h3>Sleek Speech Bubbles</h3>
+                </div>
+                <ul>
+                  <li><strong>Professional Styling:</strong> Redesigned with a smooth, clean black-and-white theme.</li>
+                  <li><strong>Real-time Tracking:</strong> The speech bubble now follows Raian dynamically across the screen. If he moves while talking, the bubble moves with him.</li>
+                </ul>
+              </div>
+
+              <div className="pet-update-card glass-card" style={{ gridColumn: 'span 2' }}>
+                <div className="pet-update-card-header">
+                  <span className="pet-update-emoji">🏃</span>
+                  <h3>Physics & Movement Upgrades</h3>
+                </div>
+                <ul>
+                  <li><strong>Accelerated Gravity Fall:</strong> Dragging and dropping Raian in mid-air now results in a faster, smoother, and much more natural falling animation.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Voice-Over Showcase Soundboard */}
+      <section className="pet-section">
+        <div className="pet-container">
+          <div className="pet-section-header">
+            <span className="pet-tag">Sound Showcase</span>
+            <h2 className="pet-section-title">🎙️ Raian's Interactive Soundboard</h2>
+            <p className="pet-section-subtitle">Click the buttons below to sample the new voice-overs and dialogue sound effects!</p>
+          </div>
+
+          <div className="pet-soundboard-grid">
+            {voiceovers.map((vo, i) => (
+              <div 
+                key={i} 
+                className={`pet-sound-card glass-card ${playingAudio === vo.file ? 'playing' : ''}`}
+                onClick={() => playSound(vo.file)}
+              >
+                <div className="pet-sound-play-btn">
+                  {playingAudio === vo.file ? (
+                    <div className="pet-playing-indicator">
+                      <span className="bar"></span>
+                      <span className="bar"></span>
+                      <span className="bar"></span>
+                    </div>
+                  ) : (
+                    <Play size={16} fill="currentColor" />
+                  )}
+                </div>
+                <div className="pet-sound-info">
+                  <div className="pet-sound-meta">
+                    <span className="pet-sound-badge">{vo.category}</span>
+                    <span className="pet-sound-file">{vo.file}</span>
+                  </div>
+                  <h3>{vo.name}</h3>
+                  <p>{vo.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Video Showcase Section */}
+      <section id="preview" className="pet-section pet-section-alt">
+        <div className="pet-container">
+          <div className="pet-section-header">
+            <span className="pet-tag">Video Showcase</span>
+            <h2 className="pet-section-title">See Features in Action</h2>
+            <p className="pet-section-subtitle">Switch tabs to preview the new flight dynamics, feeding, and general behaviors.</p>
+          </div>
+
+          <div className="pet-video-showcase">
+            <div className="pet-video-tabs">
+              <button 
+                className={`pet-video-tab ${activeVideoTab === 'demo' ? 'active' : ''}`}
+                onClick={() => setActiveVideoTab('demo')}
+              >
+                <Monitor size={16} />
+                <span>General Gameplay</span>
+              </button>
+              <button 
+                className={`pet-video-tab ${activeVideoTab === 'eating' ? 'active' : ''}`}
+                onClick={() => setActiveVideoTab('eating')}
+              >
+                <Utensils size={16} />
+                <span>🍙 Interactive Feeding</span>
+              </button>
+              <button 
+                className={`pet-video-tab ${activeVideoTab === 'flying' ? 'active' : ''}`}
+                onClick={() => setActiveVideoTab('flying')}
+              >
+                <Rocket size={16} />
+                <span>✈️ Flight Overhaul</span>
+              </button>
+            </div>
+
+            <div className="pet-video-wrapper">
+              <div className="pet-video-container">
+                <video
+                  key={activeVideoTab}
+                  controls
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  poster="/DESKTOP WEB/idle.png"
+                >
+                  <source src={videos[activeVideoTab].src} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                <div className="pet-video-badge">
+                  <Play size={12} />
+                  <span>{videos[activeVideoTab].title}</span>
+                </div>
+              </div>
+              <p className="pet-video-description-text">{videos[activeVideoTab].desc}</p>
             </div>
           </div>
         </div>
@@ -353,12 +583,12 @@ export default function PetRaian() {
                   <Monitor size={18} /> Desktop (Windows)
                 </span>
                 <a
-                  href="/DESKTOP WEB/Raian_your_pet.exe"
-                  download="Raian_your_pet.exe"
+                  href="/DESKTOP WEB/Raian_your_pet_V2.exe"
+                  download="Raian_your_pet_V2.exe"
                   className="pet-btn pet-btn-download pet-btn-lg"
                 >
                   <Download size={22} />
-                  <span>Download Raian.exe</span>
+                  <span>Download Raian.exe (v2.0.0)</span>
                 </a>
               </div>
 
